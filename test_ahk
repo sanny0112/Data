@@ -1,0 +1,45 @@
+#NoTrayIcon
+#SingleInstance ignore
+
+Gui, Font, S10 CDefault, Verdana
+Gui, Add, Text, x12 y60 w70 h20, Ваш LVL:
+Gui, Add, Text, x12 y90 w70 h20, Доп. EXP:
+Gui, Add, Edit, x92 y60 w100 h20 vLVL, 
+Gui, Add, Edit, x92 y90 w100 h20 vEXP, 
+Gui, Add, Button, x212 y70 w120 h30 gCalculating, Конвертировать
+Gui, Font, S20 CDefault, Verdana
+Gui, Add, Text, x44 y10 w250 h40 +Center, Калькулятор EXP
+Gui, Font, S20 CDefault Bold, Verdana
+Gui, Add, Text, x12 y120 w320 h30 +Right vResVar, = 0
+Gui, Show, Center, Калькулятор EXP
+Return
+
+GuiClose:
+ExitApp
+
+Calculating:
+{
+    GuiControlGet, LVL
+    GuiControlGet, EXP
+    if !RegExMatch(LVL, "^\d+?$")
+        LVL:=0
+    if !RegExMatch(EXP, "^\d+?$")
+        EXP:=0
+    AllExp:=0
+    loop, %LVL%
+    {
+        if(A_Index!=1)
+        {
+            if(A_Index==2)
+                LvlExp:=8
+            else LvlExp:=LvlExp+4
+        }
+        else LvlExp:=0
+        AllExp:=AllExp+LvlExp
+    }
+    Result:=AllExp+EXP
+    Res:="= " Result
+    GuiControl,, ResVar, %Res%
+    SoundBeep
+}
+Return
